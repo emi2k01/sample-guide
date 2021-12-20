@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href='&#x2F;public&#x2F;style&#x2F;style.css' />
+    <link rel="stylesheet" href='&#x2F;public&#x2F;theme-dark.css' />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+    <title>Hello, world!</title>
+</head>
+
+<body data-workspace-url='&#x2F;2&#x2F;workspace'>
+    <div id="wrapper">
+        <header>
+            <div>
+                
+                    <a href="&#x2F;1" title="TODO">←</a>
+                
+                
+                    <a href="&#x2F;3" title="TODO">→</a>
+                
+            </div>
+        </header>
+        <div class="three-columns">
+            <main id="page" class="markdown-body"><h1>Hello, world!</h1>
+<p>Before we start getting our hands into code, we first have to explain how Actix Web works.</p>
+<h2>Actix-Web’s model</h2>
+<p>One of Actix-Web’s primitives is the <code>App</code>. Quoting <a href="https://actix.rs/docs/application/" rel="noopener noreferrer">Actix-Web’s documentation</a>:</p>
+<blockquote>
+<p>All <code>actix-web</code> servers are built around the App instance. It is used for
+registering routes for resources and middleware. It also stores application
+state shared across all handlers within the same scope.</p>
+</blockquote>
+<p>Another primitive is <code>HttpServer</code>. <code>HttpServer</code> is responsible for serving HTTP
+requests. It uses the provided <code>App</code> and creates an instance for each worker.
+That’s why in <a href="#csai:highlight_regex%20file=%22src/main.rs%22%20from=%22%5E(%5Cs)%7B4%7DHttpServer::new%22%20to=%22(%5Cs)%7B4%7D%5C%7D%5C)$%22" rel="noopener noreferrer">our code</a> the <code>App</code> is inside a closure, so that our <code>HttpServer</code>
+can call the closure multiple times and create multiple instances.</p>
+<h2>Hands on code</h2>
+<p>Actix-Web is asynchronous, that means that our first is to add an async runtime.
+That’s what <a href="#csai:highlight_regex%20file=%22src/main.rs%22%20from=%22%5E#%5C%5Bactix_web::main%5C%5D$%22%20to=%22%22" rel="noopener noreferrer">#[actix_web::main]</a> does. It allows using an
+<code>async</code> main function that automatically sets up a multi-threaded runtime.</p>
+<p><a href="#csai:highlight_regex%20file=%22src/main.rs%22%20from=%22%5E(%5Cs)%7B4%7DHttpServer::new%22%20to=%22(%5Cs)%7B4%7D%5C%7D%5C)$%22" rel="noopener noreferrer">Next</a>, we create an <code>HttpServer</code> and pass a closure that returns
+an <code>App</code>. We only add a single service to our <code>App</code> which is our index handler.</p>
+<h2>Handlers</h2>
+<p>In Actix-Web there are multiple ways of handling HTTP requests. One of those is
+by using the <code>#[get]</code>, <code>#[post]</code>, <code>#[put]</code>, <code>#[patch]</code> and <code>#[delete]</code> attributes. Each of those
+corresponds to their respective HTTP methods.</p>
+<h3>Index handler</h3>
+<p><a href="#csai:highlight_regex%20file=%22src/main.rs%22%20from=%22%5E#%5C%5Bget%5C(%7E%22/%7E%22%5C)%5C%5D$%22%20to=%22%5E%7D%22" rel="noopener noreferrer">We make use of <code>#[get]</code></a> to create a handler for our index
+page. We pass a string to the attribute that indicates the route it needs to handle.</p>
+<p><a href="#csai:highlight_regex%20file=%22src/main.rs%22%20from=%22%5Easync%20fn%20index%5C(%22" rel="noopener noreferrer">We return <code>impl Responder</code></a> which basically means “This function will return a
+type that implements the trait <code>Responder</code> and I don’t make any other
+guarantees”</p>
+<p>In this case, we create a <code>HttpResponse</code> by using the <code>Ok</code>
+constructor. This creates a response that will return the HTTP status code “200
+Ok”.</p>
+<p><a href="#csai:highlight_regex%20file=%22src/main.rs%22%20from=%22%5E(%5Cs)%7B8%7D.content_type%22%20to=%22%22" rel="noopener noreferrer">We then use</a> the <code>content_type</code> method to change the
+content type of our response. We pass <code>ContentType::html()</code> to return the MIME
+type of HTML content.</p>
+<p><a href="#csai:highlight_regex%20file=%22src/main.rs%22%20from=%22%5E(%5Cs)%7B8%7D.body%22%20to=%22%22" rel="noopener noreferrer">We then finish</a> our response by passing the body.</p>
+</main>
+            <section id="file-viewer" class="closed">
+                <div class="file-name"><span></span></div>
+                <div class="code-viewer">
+                    <div class="line-numbers">
+                        <a href="#">1</a>
+                        <a href="#">2</a>
+                        <a href="#">3</a>
+                    </div>
+                    <!-- `#code-block-bg is a duplicate of #code-block use for
+                        alignment purposes when we want to highlight lines
+                        without disturbing the syntax highlighting` -->
+                    <pre><code id="code-block"></code><code id="code-block-bg"></code></pre>
+                </div>
+            </section>
+            <section id="explorer">
+                <h2>Explorer</h2>
+                <ul>
+                    
+                        
+<li>
+    <button class="directory-button">
+        <span style="padding-left: calc(var(--list-padding) * (1 - 1));"><i class="fas fa-folder-open folder-open"></i><i class="fas fa-folder folder-closed"></i> src</span>
+    </button>
+    <ul>
+        
+        
+            
+<li>
+    <a href='#csai:open_file file="src&#x2F;main.rs"' class="file-button" data-path="src&#x2F;main.rs" data-file-name="main.rs">
+        <span class="file-name" style="padding-left: calc(var(--list-padding) * (2 - 1));"><i class="fas fa-file"></i> main.rs</span>
+    </a>
+<li>
+
+        
+    </ul>
+</li>
+
+                    
+                    
+                        
+<li>
+    <a href='#csai:open_file file="Cargo.lock"' class="file-button" data-path="Cargo.lock" data-file-name="Cargo.lock">
+        <span class="file-name" style="padding-left: calc(var(--list-padding) * (1 - 1));"><i class="fas fa-file"></i> Cargo.lock</span>
+    </a>
+<li>
+
+                    
+                        
+<li>
+    <a href='#csai:open_file file="Cargo.toml"' class="file-button" data-path="Cargo.toml" data-file-name="Cargo.toml">
+        <span class="file-name" style="padding-left: calc(var(--list-padding) * (1 - 1));"><i class="fas fa-file"></i> Cargo.toml</span>
+    </a>
+<li>
+
+                    
+                </ul>
+            </section>
+        </div>
+    </div>
+    <script type="module" src="&#x2F;public&#x2F;theme&#x2F;main.js"></script>
+</body>
+
+</html>
+
